@@ -1,0 +1,72 @@
+<!doctype html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
+
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<div class="container p-4">
+    <div class="d-flex justify-content-between">
+        <p class="fw-bold">Prescription</p>
+        <div class="d-flex gap-2">
+            <a href="/prescription/statistic" class="btn btn-secondary">View Statistics</a>
+            <a href="/prescription/add/find-patient" class="btn btn-primary">Add Prescriptions</a>
+        </div>
+    </div>
+    <br>
+    <form th:action="@{/prescription}" method="get" class="d-flex gap-2 align-items-center mb-3">
+        <label for="select-status">Status</label>
+        <select class="form-select" id="select-status" name="status" aria-label="Select Status">
+            <option selected>All</option>
+            <option value="0">Created</option>
+            <option value="1">Waiting for Stock</option>
+            <option value="2">Done</option>
+            <option value="3">Cancelled</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+    <table id="data">
+        <thead>
+        <tr>
+            <td>No</td>
+            <td>Id</td>
+            <td>Created At</td>
+            <td>Patient</td>
+            <td>Total Price</td>
+            <td>Status</td>
+            <td>Action</td>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prescription, iteration : ${listPrescription}">
+                <td th:text="${iteration.count}"></td>
+                <td th:text="${prescription.getId()}"></td>
+                <td th:text="${prescription.getCreatedDate()}"></td>
+                <td th:text="${prescription.getPatient().getName()}"></td>
+                <td th:text="${prescription.formatRupiah(prescription.getTotalPrice())}"></td>
+                <td th:if="${prescription.getStatus() == 0}">Created</td>
+                <td th:if="${prescription.getStatus() == 1}">Waiting for Stock</td>
+                <td th:if="${prescription.getStatus() == 2}">Done</td>
+                <td th:if="${prescription.getStatus() == 3}">Cancelled</td>
+                <td><a class="btn btn-primary" th:href="@{|/prescription/${prescription.getId()}|}">Detail</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    new DataTable('#data');
+</script>
+</body>
+</html>

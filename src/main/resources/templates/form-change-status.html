@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>Process Prescription</title>
+</head>
+
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<div class="container">
+    <div class="text-center my-4">
+        <h2>Process Prescription</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="card" style="width: 60rem;">
+            <div class="card-body">
+                <div>
+                    <form th:action="@{|/prescription/${idPrescription}/mark-done|}" th:object="${dto}" method="POST">
+<!--                        <div class="form-group row my-3">-->
+<!--                            <label for="processed-by" class="col-sm-3 fw-bold col-form-label">Processed By</label>-->
+<!--                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>-->
+<!--                            <div class="col-sm-3">-->
+<!--                                <select class="form-select" id="processed-by" th:field="*{processedBy}">-->
+<!--                                    <option value="" selected>Select a Pharmacist</option>-->
+<!--                                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="row my-3">
+                            <label class="card-text fw-bold col-sm-3" for="processed-by">Processed By</label>
+                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
+                            <div class="col-sm-3">
+                                <select class="form-select" id="processed-by" th:field="*{processedBy}">
+                                    <option value="" selected>Select a Pharmacist</option>
+                                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('processedBy')}" th:errors="*{processedBy}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row my-3">
+                            <p class="card-text fw-bold col-sm-3">ID</p>
+                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
+                            <p class="card-text col-sm-8" th:text="${prescription.id}"></p>
+                        </div>
+
+                        <div class="row my-3">
+                            <p class="card-text fw-bold col-sm-3">Patient</p>
+                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
+                            <p class="card-text col-sm-8" th:text="${prescription.patient.name}"></p>
+                        </div>
+
+                        <div class="row my-3">
+                            <p class="card-text fw-bold col-sm-3">Total Price</p>
+                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
+                            <p class="card-text col-sm-8" th:text="${prescription.totalPrice}"></p>
+                        </div>
+
+                        <h5 class="fw-bold mt-4">Requested Medicine</h5>
+                            <table class="table table-striped table-bordered table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Medicine ID</th>
+                                        <th>Medicine Name</th>
+                                        <th>Requested Quantity</th>
+                                        <th>Fulfilled Quantity</th>
+                                        <th>Current Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="mq, iter : ${listMedicineQuantity}">
+                                        <td th:text="${iter.count}"></td>
+                                        <td th:text="${mq.medicineId}"></td>
+                                        <td th:text="${dto.listMedicine[__${iter.index}__].name}"></td>
+                                        <td th:text="${mq.quantity}"></td>
+                                        <td th:text="${mq.fulfilledQty}"></td>
+                                        <td th:text="${dto.listMedicine[__${iter.index}__].stock}" th:style="${dto.listMedicine[__${iter.index}__].stock < (mq.quantity - mq.fulfilledQty)} ? 'color: red;' : 'color: black;'"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>Create Prescription</title>
+</head>
+
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<div class="container">
+    <div class="text-center my-4">
+        <h2>New Patient Prescription Form</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="card" style="width: 60rem;">
+            <div class="card-body">
+                <div>
+                    <form th:action="@{/prescription/add}" th:object="${dto}" method="POST">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="pharmacist" class="form-label">Input by</label>
+                                <select class="form-select" id="pharmacist" th:field="*{pharmacistId}">
+                                    <option value="" selected>Select Pharmacist</option>
+                                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}"
+                                            th:text="${pharmacist.name}"></option>
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('pharmacistId')}" th:errors="*{pharmacistId}"></div>
+                            </div>
+                        </div>
+
+                        <h5>Patient Data</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input class="form-control" id="name" type="text" th:field="*{name}" placeholder="Name">
+                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nik" class="form-label">NIK</label>
+                                <input class="form-control" id="nik" type="text" th:field="*{nik}" placeholder="NIK">
+                                <div class="text-danger" th:if="${#fields.hasErrors('nik')}" th:errors="*{nik}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input class="form-control" id="email" type="email" th:field="*{email}" placeholder="Email">
+                                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="date-of-birth" class="form-label">Date of Birth</label>
+                                <input class="form-control" id="date-of-birth" type="date" th:field="*{birthDate}" placeholder="dd-mm-yyyy">
+                                <div class="text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Gender</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" th:field="*{gender}"
+                                               value="1">
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="female" th:field="*{gender}"
+                                               value="0">
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <br>
+                        <div class="d-flex justify-content-between">
+                            <h5>Prescription Data</h5>
+                            <button class="btn btn-primary" type="submit" name="addRow">Add Row</button>
+                        </div>
+                        <div class="form-group column my-3">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Medicine</th>
+                                    <th>Stock Amount</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="medicineQuantity, iterationStatus : *{listMedicineQuantity}">
+                                    <td>
+                                        <select th:field="*{listMedicineQuantity[__${iterationStatus.index}__].medicineId}" class="form-select">
+                                            <option th:each="medicineExisting : ${listMedicineExisting}"
+                                                    th:text="${medicineExisting.getName()}"
+                                                    th:value="${medicineExisting.getId()}"></option>
+                                        </select>
+                                        <div class="text-danger" th:if="${#fields.hasErrors('listMedicineQuantity[__${iterationStatus.index}__].medicineId')}"
+                                             th:errors="*{listMedicineQuantity[__${iterationStatus.index}__].medicineId}"></div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="number" th:field="*{listMedicineQuantity[__${iterationStatus.index}__].qty}">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('listMedicineQuantity[__${iterationStatus.index}__].qty')}"
+                                             th:errors="*{listMedicineQuantity[__${iterationStatus.index}__].qty}"></div>
+                                    </td>
+                                    <td>
+                                        <button th:value="${iterationStatus.index}" class="btn btn-danger"
+                                                type="submit" name="deleteRow">Delete Row</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="text-danger" th:if="${#fields.hasErrors('listMedicineQuantity')}" th:errors="*{listMedicineQuantity}"></div>
+                        </div>
+                        <div class="text-center m-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary" href="/">Home</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
