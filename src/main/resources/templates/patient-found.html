@@ -41,7 +41,7 @@
                     <div class="row my-3">
                         <p class="card-text fw-bold col-sm-3">Date of Birth</p>
                         <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                        <p class="card-text col-sm-8" th:text="${patient.getBirthDate()}"></p>
+                        <p class="card-text col-sm-8" th:text="${patient.formatDateForPatientInformation(patient.getBirthDate())}"></p>
                     </div>
 
                     <form th:action="@{/prescription/add/{id}(id=${patient.getId().toString()})}" method="get">

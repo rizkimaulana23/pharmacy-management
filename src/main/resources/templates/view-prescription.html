@@ -102,7 +102,9 @@
                     <tbody>
                         <tr th:each="mq, iter : ${listMedicineQuantity}">
                             <td th:text="${iter.index}"></td>
-                            <td th:text="${mq.medicineId}"></td>
+                            <td>
+                                <a th:href="@{|/medicine/${mq.medicineId}|}" th:text="${mq.medicineId}"></a>
+                            </td>
                             <td th:text="${listMedicine[__${iter.index}__].name}"></td>
                             <td th:text="${mq.quantity}"></td>
                             <td th:text="${mq.fulfilledQty}"></td>

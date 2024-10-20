@@ -50,6 +50,7 @@
                             <div class="col-sm-9">
                                 <input class="form-control" type="text" th:field="*{medicineId}" style="display: none">
                                 <input class="form-control" type="number" id="stock" th:field="*{qty}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('qty')}" th:errors="*{qty}"></div>
                             </div>
                         </div>
 

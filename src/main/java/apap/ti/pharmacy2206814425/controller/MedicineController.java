@@ -166,7 +166,12 @@ public class MedicineController {
     }
 
     @PostMapping("/{id}/update-stock")
-    public String restockSingle(@Valid @ModelAttribute RestockDTO restockDTO, BindingResult bindingResult, Model model, @PathVariable("id") String id) {
+    public String restockSingle(@Valid @ModelAttribute("restockDTO") RestockDTO restockDTO, BindingResult bindingResult, Model model, @PathVariable("id") String id) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("restockDTO", restockDTO);
+            model.addAttribute("medicine", medicineService.getMedicine(id));
+            return "restock-single-medicine";
+        }
         medicineService.restockSingleMedicine(restockDTO);
         model.addAttribute("responseMessage", String.format("Restock untuk Medicine dengan ID %s berhasil dilakukan.", id));
         return "success-medicine";
@@ -178,7 +183,7 @@ public class MedicineController {
             model.addAttribute("responseMessage", String.format("Medicine dengan ID %s berhasil dihapus", id));
             return "success-medicine";
         } else {
-            model.addAttribute("responseMessage", String.format("Medicine dengan ID %s tidak ditemukan ", id));
+            model.addAttribute("responseMessage", String.format("Medicine dengan ID %s tidak dapat dihapus", id));
             return "success-medicine";
         }
     }

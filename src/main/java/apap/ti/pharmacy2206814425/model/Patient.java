@@ -9,6 +9,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -64,4 +68,22 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Prescription> prescriptions;
+
+
+    public static String formatDateForPatientInformation(Date dateOfBirth) {
+        LocalDate localDateOfBirth = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        String formattedDate = localDateOfBirth.format(formatter);
+
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(localDateOfBirth, today);
+
+        int years = period.getYears();
+        int months = period.getMonths();
+        int days = period.getDays();
+
+        return formattedDate + " ("
+                + years + " years, " + months + " months, " + days + " days)";
+    }
 }

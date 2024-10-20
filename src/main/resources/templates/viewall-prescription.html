@@ -29,11 +29,11 @@
     <form th:action="@{/prescription}" method="get" class="d-flex gap-2 align-items-center mb-3">
         <label for="select-status">Status</label>
         <select class="form-select" id="select-status" name="status" aria-label="Select Status">
-            <option selected>All</option>
-            <option value="0">Created</option>
-            <option value="1">Waiting for Stock</option>
-            <option value="2">Done</option>
-            <option value="3">Cancelled</option>
+            <option th:selected="${status == null}">All</option>
+            <option value="0" th:selected="${status == '0'}">Created</option>
+            <option value="1" th:selected="${status == '1'}">Waiting for Stock</option>
+            <option value="2" th:selected="${status == '2'}">Done</option>
+            <option value="3" th:selected="${status == '3'}">Cancelled</option>
         </select>
         <button type="submit" class="btn btn-primary">Apply</button>
     </form>

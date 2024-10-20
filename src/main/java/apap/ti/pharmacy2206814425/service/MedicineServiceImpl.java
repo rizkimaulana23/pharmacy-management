@@ -5,7 +5,10 @@ import apap.ti.pharmacy2206814425.dto.RestockDTO;
 import apap.ti.pharmacy2206814425.dto.RestockMultipleDTO;
 import apap.ti.pharmacy2206814425.dto.UpdateMedicineDTO;
 import apap.ti.pharmacy2206814425.model.Medicine;
+import apap.ti.pharmacy2206814425.model.MedicineQuantity;
+import apap.ti.pharmacy2206814425.model.Prescription;
 import apap.ti.pharmacy2206814425.repository.MedicineDb;
+import apap.ti.pharmacy2206814425.repository.PrescriptionDb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,15 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Autowired
     private MedicineDb medicineDb;
+
+    @Autowired
+    private PrescriptionService prescriptionService;
+
+    @Autowired
+    private PrescriptionDb prescriptionDb;
+
+    @Autowired
+    private MedicineQuantityService medicineQuantityService;
 
     private final WebClient webClient;
 
@@ -85,12 +97,19 @@ public class MedicineServiceImpl implements MedicineService {
     @Override
     public boolean deleteMedicine(String id) {
         Medicine medicine = medicineDb.findMedicineById(id);
-        if (medicine != null) {
-            medicine.setDeletedDate(new Date());
-            medicineDb.save(medicine);
-            return true;
+        if (medicine == null) return false;
+
+        List<Prescription> listPrescription = prescriptionDb.findAllByStatusOrStatus(0, 1);
+        for (Prescription prescription : listPrescription) {
+            List<MedicineQuantity> listMq = medicineQuantityService.getMedicineQuantityForPrescription(prescription.getId());
+            for (MedicineQuantity mq: listMq) {
+                if (mq.getMedicineId().equals(id)) return false;
+            }
         }
-        return false;
+
+        medicine.setDeletedDate(new Date());
+        medicineDb.save(medicine);
+        return true;
     }
 
     private static String formatMedicineId(long number) {

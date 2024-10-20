@@ -57,23 +57,18 @@ public class Prescription {
     private Patient patient;
 
     public static String formatRupiah(long amount) {
-        // Create a DecimalFormat instance
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setGroupingSeparator('.');
         symbols.setDecimalSeparator(',');
 
-        // Define the currency format pattern
         DecimalFormat rupiahFormat = new DecimalFormat("Rp #,##0.00", symbols);
 
-        // Format the amount and return it as a string
         return rupiahFormat.format(amount);
     }
 
     public static String formatDate(Date date) {
-        // Define the date pattern for the desired format
         SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, yyyy | HH:mm:ss");
 
-        // Format the date and return it as a string
         return formatter.format(date);
     }
 }

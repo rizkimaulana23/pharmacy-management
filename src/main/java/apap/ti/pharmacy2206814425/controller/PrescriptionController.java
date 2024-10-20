@@ -83,6 +83,7 @@ public class PrescriptionController {
                 for (Prescription p : prescriptionService.getAllPrescriptionWithStatus(Integer.parseInt(status))) {
                     log.info(p.getId());
                 }
+                model.addAttribute("status", status);
                 return "viewall-prescription";
             }
         }
