@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -13,11 +12,9 @@ import java.util.List;
 public class PrescriptionResponseDTO {
     private String id;
     private Long totalPrice;
-    private Integer status;
-    private Date createdDate;
-    private Date updatedDate;
-    private String createdBy;
-    private String updatedBy;
+    private String status;
+    private String createdDate;
+    private String updatedDate;
     private PharmacistResponseDTO pharmacist;
     private PatientResponseDTO patient;
     private List<MedicineQuantityResponseDTO> listMedicineQuantity;

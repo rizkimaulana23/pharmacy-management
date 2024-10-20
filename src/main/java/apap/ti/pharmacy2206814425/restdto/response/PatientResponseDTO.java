@@ -1,5 +1,6 @@
 package apap.ti.pharmacy2206814425.restdto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.UUID;
 public class PatientResponseDTO {
     private UUID id;
     private String nik;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthDate;
     private String name;
     private String email;

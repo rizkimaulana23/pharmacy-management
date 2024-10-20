@@ -305,13 +305,21 @@ public class PrescriptionRestServiceImpl implements PrescriptionRestService{
     public PrescriptionResponseDTO prescriptionResponseDTOGenerator(List<MedicineQuantity> listMq, Prescription pr) {
         PrescriptionResponseDTO response = new PrescriptionResponseDTO();
         Prescription prescription = prescriptionDb.findById(pr.getId()).isPresent() ?  prescriptionDb.findById(pr.getId()).get() : null ;
+
         response.setId(prescription.getId());
+
         response.setTotalPrice(prescription.getTotalPrice());
-        response.setStatus(prescription.getStatus());
-        response.setCreatedBy(prescription.getCreatedBy());
-        response.setUpdatedBy(prescription.getUpdatedBy());
-        response.setCreatedDate(prescription.getCreatedDate());
-        response.setUpdatedDate(prescription.getUpdatedDate());
+        if (prescription.getStatus() == 0) {
+            response.setStatus("Created");
+        } else if (prescription.getStatus() == 1) {
+            response.setStatus("Waiting for stock");
+        } else if (prescription.getStatus() == 2) {
+            response.setStatus("Done");
+        } else  {
+            response.setStatus("Cancelled");
+        }
+        response.setCreatedDate(Prescription.formatDate(prescription.getCreatedDate()));
+        response.setUpdatedDate(Prescription.formatDate(prescription.getUpdatedDate()));
 
         Patient patient = patientDb.findByNik(pr.getPatient().getNik());
         PatientResponseDTO patientResponseDTO = new PatientResponseDTO();

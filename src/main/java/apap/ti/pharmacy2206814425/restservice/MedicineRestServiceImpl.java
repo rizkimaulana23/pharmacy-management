@@ -130,8 +130,6 @@ public class MedicineRestServiceImpl implements MedicineRestService {
         medicineResponseDTO.setPrice(medicine.getPrice());
         medicineResponseDTO.setStock(medicine.getStock());
         medicineResponseDTO.setDescription(medicine.getDescription());
-        medicineResponseDTO.setCreatedBy(medicine.getCreatedBy());
-        medicineResponseDTO.setUpdatedBy(medicine.getCreatedBy());
         medicineResponseDTO.setUpdatedDate(medicine.getUpdatedDate());
         medicineResponseDTO.setCreatedDate(medicine.getCreatedDate());
         return medicineResponseDTO;

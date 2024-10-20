@@ -21,6 +21,4 @@ public class MedicineResponseDTO {
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "Asia/Jakarta")
     private Date updatedDate;
-    private String createdBy;
-    private String updatedBy;
 }
