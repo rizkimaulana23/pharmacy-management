@@ -3,66 +3,370 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>Update Stock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Restock Medicine</title>
+
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-card: #ffffff;
+            --text-primary: #0a0a0a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-light: #e5e7eb;
+            --border-focus: #3b82f6;
+            --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition-fast: 0.15s ease-out;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .info-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .info-value.name {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .info-value.stock {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            padding: 2.5rem;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.025em;
+        }
+
+        .form-control-modern {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-card);
+            transition: var(--transition-fast);
+            outline: none;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .form-control-modern:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-control-modern:hover {
+            border-color: var(--text-muted);
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon .form-control-modern {
+            padding-left: 3rem;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .error-message {
+            color: var(--accent-red);
+            font-size: 0.75rem;
+            margin-top: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn-modern {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .btn-secondary-modern {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary-modern:hover {
+            background: var(--text-primary);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .info-card, .form-card {
+                padding: 1.75rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-modern {
+                width: 100%;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Update Stock</h2>
-    </div>
-    <div class="row justify-content-center">
-        <div class="card" style="width: 60rem;">
-            <div class="card-body">
-                <div>
-                    <form th:action="@{'/medicine/' + ${restockDTO.getMedicineId()} + '/update-stock' }" th:object="${restockDTO}" method="POST">
-                        <div class="row my-3">
-                            <p class="col-sm-2 fw-bold col-form-label">ID</p>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <p th:text="${medicine.getId()}"></p>
-                            </div>
-                        </div>
 
-                        <div class="row my-3">
-                            <p class="col-sm-2 fw-bold col-form-label">Name</p>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <p th:text="${medicine.getName()}"></p>
-                            </div>
-                        </div>
+<main class="main-container">
+    <header class="page-header">
+        <h1 class="page-title">Restock Medicine</h1>
+        <p class="page-subtitle">Add additional stock to existing medicine</p>
+    </header>
 
-                        <div class="row my-3">
-                            <p class="col-sm-2 fw-bold col-form-label">Current Stock</p>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <p th:text="${medicine.getStock()}"></p>
-                            </div>
-                        </div>
-
-                        <div class="form-group row my-3">
-                            <label for="stock" class="col-sm-2 fw-bold col-form-label">Added Stock</label>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" th:field="*{medicineId}" style="display: none">
-                                <input class="form-control" type="number" id="stock" th:field="*{qty}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('qty')}" th:errors="*{qty}"></div>
-                            </div>
-                        </div>
-
-                        <div class="text-center m-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a class="btn btn-primary" href="/">Home</a>
-                        </div>
-                    </form>
-                </div>
+    <!-- Medicine Information Card -->
+    <div class="info-card">
+        <div class="info-header">
+            <div class="info-icon">
+                <i class="bi bi-capsule"></i>
+            </div>
+            <h2 class="info-title">Medicine Information</h2>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Medicine ID</span>
+                <span class="info-value" style="font-family: 'Monaco', 'Consolas', monospace; color: var(--text-muted);" 
+                      th:text="${medicine.getId()}"></span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Medicine Name</span>
+                <span class="info-value name" th:text="${medicine.getName()}"></span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Current Stock</span>
+                <span class="info-value stock" th:text="${medicine.getStock()} + ' units'"></span>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Restock Form -->
+    <div class="form-card">
+        <form th:action="@{'/medicine/' + ${restockDTO.getMedicineId()} + '/update-stock' }" th:object="${restockDTO}" method="POST">
+            <input class="form-control-modern" type="hidden" th:field="*{medicineId}">
+            
+            <div class="form-group">
+                <label for="stock" class="form-label">Additional Stock Quantity</label>
+                <div class="input-icon">
+                    <i class="bi bi-plus-lg"></i>
+                    <input class="form-control-modern" type="number" id="stock" th:field="*{qty}" 
+                           placeholder="Enter quantity to add" min="1">
+                </div>
+                <div class="error-message" th:if="${#fields.hasErrors('qty')}">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <span th:errors="*{qty}"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a class="btn-modern btn-secondary-modern" href="/">
+                    <i class="bi bi-arrow-left"></i>
+                    Cancel
+                </a>
+                <button type="submit" class="btn-modern btn-primary-modern">
+                    <i class="bi bi-arrow-up-circle"></i>
+                    Update Stock
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
 </body>
 </html>

@@ -5,67 +5,376 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Restock Medicines</title>
+    <title>Bulk Restock Medicines</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-card: #ffffff;
+            --text-primary: #0a0a0a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-light: #e5e7eb;
+            --border-focus: #3b82f6;
+            --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition-fast: 0.15s ease-out;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            padding: 2.5rem;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .btn-modern {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .btn-danger-modern {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .btn-danger-modern:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .btn-secondary-modern {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary-modern:hover {
+            background: var(--text-primary);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-success-modern {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .btn-success-modern:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .table-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table {
+            margin: 0;
+            background: transparent;
+        }
+
+        .table thead th {
+            background: var(--bg-primary);
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border: none;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .form-select-modern {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: var(--bg-card);
+            transition: var(--transition-fast);
+            outline: none;
+            font-family: inherit;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+
+        .form-select-modern:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-control-modern {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: var(--bg-card);
+            transition: var(--transition-fast);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-control-modern:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .error-message {
+            color: var(--accent-red);
+            font-size: 0.75rem;
+            margin-top: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn-submit {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            min-width: 160px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .form-card {
+                padding: 1.75rem;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn-modern {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table tbody tr {
+            animation: slideUp 0.3s ease-out;
+        }
+    </style>
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Restock Medicines</h2>
-    </div>
-    <div class="row justify-content-center">
-        <div class="card" style="width: 60rem;">
-            <div class="card-body">
 
-                <form  method="post" th:action="@{/medicine/restock}" th:object="${restockMultipleDTO}">
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-primary" type="submit" name="addRow">Add Row</button>
-                        <button class="btn btn-danger" type="submit" name="cancelAll">Cancel All</button>
-                    </div>
-                    <div class="form-group column my-3">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Medicine</th>
-                                <th>Stock Amount</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="restockDTO, iterationStatus : *{listRestockDTO}">
-                                <td>
-                                    <select th:field="*{listRestockDTO[__${iterationStatus.index}__].medicineId}" class="form-select">
-                                        <option th:each="medicineExisting : ${listMedicineExisting}"
-                                                th:text="${medicineExisting.getName()}"
-                                                th:value="${medicineExisting.getId()}"></option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input class="form-control" type="number" th:field="*{listRestockDTO[__${iterationStatus.index}__].qty}">
-                                    <div class="text-danger" th:if="${#fields.hasErrors('listRestockDTO[' + iterationStatus.index + '].qty')}" th:errors="*{listRestockDTO[__${iterationStatus.index}__].qty}"></div>
-                                </td>
-                                <td>
-                                    <button th:value="${iterationStatus.index}" class="btn btn-danger"
-                                            type="submit" name="deleteRow">Delete Row</button>
-                                </td>
-                            </tr>
-                            </tbody>
+<main class="main-container">
+    <header class="page-header">
+        <h1 class="page-title">Bulk Restock Medicines</h1>
+        <p class="page-subtitle">Restock multiple medicines at once</p>
+    </header>
 
-                        </table>
-                        <div class="text-danger" th:if="${#fields.hasErrors('listRestockDTO')}" th:errors="*{listRestockDTO}"></div>
-
-                    </div>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                </form>
+    <div class="form-card">
+        <form method="post" th:action="@{/medicine/restock}" th:object="${restockMultipleDTO}">
+            
+            <div class="toolbar">
+                <button class="btn-modern btn-primary-modern" type="submit" name="addRow">
+                    <i class="bi bi-plus-lg"></i>
+                    Add Row
+                </button>
+                <button class="btn-modern btn-danger-modern" type="submit" name="cancelAll">
+                    <i class="bi bi-x-lg"></i>
+                    Cancel All
+                </button>
             </div>
-        </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Stock Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="restockDTO, iterationStatus : *{listRestockDTO}">
+                            <td style="width: 50%;">
+                                <select th:field="*{listRestockDTO[__${iterationStatus.index}__].medicineId}" 
+                                        class="form-select-modern">
+                                    <option value="">Select a medicine</option>
+                                    <option th:each="medicineExisting : ${listMedicineExisting}"
+                                            th:text="${medicineExisting.getName()}"
+                                            th:value="${medicineExisting.getId()}"></option>
+                                </select>
+                            </td>
+                            <td style="width: 30%;">
+                                <input class="form-control-modern" type="number" 
+                                       th:field="*{listRestockDTO[__${iterationStatus.index}__].qty}"
+                                       placeholder="Enter quantity" min="1">
+                                <div class="error-message" th:if="${#fields.hasErrors('listRestockDTO[' + iterationStatus.index + '].qty')}">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span th:errors="*{listRestockDTO[__${iterationStatus.index}__].qty}"></span>
+                                </div>
+                            </td>
+                            <td style="width: 20%;">
+                                <button th:value="${iterationStatus.index}" 
+                                        class="btn-modern btn-danger-modern"
+                                        type="submit" name="deleteRow">
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="error-message" th:if="${#fields.hasErrors('listRestockDTO')}">
+                <i class="bi bi-exclamation-circle"></i>
+                <span th:errors="*{listRestockDTO}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-modern btn-success-modern btn-submit" type="submit">
+                    <i class="bi bi-check-lg"></i>
+                    Submit Restock
+                </button>
+            </div>
+        </form>
     </div>
-</div>
+</main>
 </body>
 </html>

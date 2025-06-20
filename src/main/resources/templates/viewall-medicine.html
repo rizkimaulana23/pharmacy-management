@@ -1,11 +1,11 @@
-<!doctype html >
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>All Medicines</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
@@ -13,45 +13,324 @@
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-blue-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+        }
 
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .modern-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            margin: 2.5rem;
+            padding: 2.5rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+        }
+
+        .btn-modern {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: var(--accent-blue-hover);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .btn-secondary-modern {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary-modern:hover {
+            background: white;
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        #data {
+            margin: 0;
+            width: 100%;
+        }
+
+        #data thead th {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            padding: 2.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            border-top: none;
+        }
+
+        #data tbody td {
+            padding: 2.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+            font-size: 0.875rem;
+        }
+
+        #data tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .row-number {
+            background: var(--accent-blue-light);
+            color: var(--accent-blue);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .medicine-id {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+
+        .medicine-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .medicine-price {
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .stock-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .stock-high {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .stock-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stock-low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-detail {
+            background: var(--accent-blue);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.8125rem;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            border: none;
+        }
+
+        .btn-detail:hover {
+            background: var(--accent-blue-hover);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* DataTables styling */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_processing,
+        .dataTables_wrapper .dataTables_paginate {
+            margin: 1rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            margin-left: 0.5rem;
+        }
+    </style>
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container p-3">
-    <div class="d-flex justify-content-between">
-        <h4>Medicine</h4>
-        <div class="d-flex flex-row-reverse gap-1">
-            <a th:href="@{/medicine/add}" class="btn btn-primary">Add Medicine</a>
-            <a th:href="@{/medicine/restock}" class="btn btn-secondary">Restock Medicine</a>
+
+<div class="modern-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="header-icon">
+                <i class="bi bi-capsule"></i>
+            </div>
+            All Medicines
+        </h1>
+        <div class="d-flex gap-2">
+            <a th:href="@{/medicine/restock}" class="btn-modern btn-secondary-modern">
+                <i class="bi bi-arrow-up-circle"></i>
+                Restock Medicine
+            </a>
+            <a th:href="@{/medicine/add}" class="btn-modern btn-primary-modern">
+                <i class="bi bi-plus-circle"></i>
+                Add Medicine
+            </a>
         </div>
     </div>
 
-    <table id="data">
-        <thead>
+    <div class="table-container">
+        <table id="data">
+            <thead>
             <tr>
-                <td>No</td>
-                <td>Id</td>
-                <td>Name </td>
-                <td>Price</td>
-                <td>Stock</td>
-                <td>Action</td>
+                <th>No</th>
+                <th>Medicine ID</th>
+                <th>Medicine Name</th>
+                <th>Price</th>
+                <th>Stock Status</th>
+                <th>Action</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr th:each="dto, iteration : ${listMedicineDTO}">
-                <td th:text="${iteration.count}"></td>
-                <td th:text="${dto.getId()}"></td>
-                <td th:text="${dto.getName()}"></td>
-                <td th:text="${dto.formatRupiah(dto.getPrice())}"></td>
-                <td th:text="${dto.getStock()}"></td>
-                <td><a th:href="@{|/medicine/${dto.getId()}|}" class="btn btn-primary">Detail</a></td>
-            </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <tr th:each="dto, iteration : ${listMedicineDTO}">
+                    <td>
+                        <span class="row-number" th:text="${iteration.count}"></span>
+                    </td>
+                    <td>
+                        <span class="medicine-id" th:text="${dto.getId()}"></span>
+                    </td>
+                    <td>
+                        <span class="medicine-name" th:text="${dto.getName()}"></span>
+                    </td>
+                    <td>
+                        <span class="medicine-price" th:text="${dto.formatRupiah(dto.getPrice())}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${dto.getStock() > 50}" class="stock-badge stock-high">
+                            <i class="bi bi-check-circle"></i>
+                            High Stock
+                        </span>
+                        <span th:if="${dto.getStock() <= 50 and dto.getStock() > 20}" class="stock-badge stock-medium">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            Medium Stock
+                        </span>
+                        <span th:if="${dto.getStock() <= 20}" class="stock-badge stock-low">
+                            <i class="bi bi-x-circle"></i>
+                            Low Stock
+                        </span>
+                    </td>
+                    <td>
+                        <a class="btn-detail" th:href="@{|/medicine/${dto.getId()}|}">
+                            <i class="bi bi-eye"></i>
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<script th:inline="none">
-    new DataTable('#data', {
-        order: [[1, 'asc']]
+
+<script>
+    $(document).ready(function() {
+        new DataTable('#data', {
+            "pageLength": 10,
+            "responsive": true,
+            "language": {
+                "search": "Search medicines:",
+                "lengthMenu": "Show _MENU_ medicines per page",
+                "info": "Showing _START_ to _END_ of _TOTAL_ medicines",
+                "infoEmpty": "No medicines found",
+                "zeroRecords": "No matching medicines found"
+            }
+        });
     });
 </script>
 </body>

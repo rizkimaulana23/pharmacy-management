@@ -6,36 +6,246 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Search Patient</title>
+
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-blue-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .modern-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            margin: 2.5rem auto;
+            padding: 2.5rem;
+            max-width: 600px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+        }
+
+        .form-section {
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label-modern {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-input-modern {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            background: white;
+        }
+
+        .form-input-modern:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input-modern::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+            z-index: 2;
+        }
+
+        .form-input-modern.with-icon {
+            padding-left: 2.75rem;
+        }
+
+        .btn-modern {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: var(--accent-blue-hover);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .btn-secondary-modern {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary-modern:hover {
+            background: white;
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .info-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+    </style>
 </head>
 
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Search Patient</h2>
-    </div>
-    <div class="row justify-content-center">
-        <div class="card" style="width: 60rem;">
-            <div class="card-body">
-                <div>
-                    <form th:action="@{/prescription/add/find-patient}" th:object="${dto}" method="POST">
-                        <div class="row my-3">
-                            <label for="patient-nik" class="col-sm-2 fw-bold col-form-label">NIK</label>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" id="patient-nik" th:field="*{nik}" required/>
-                            </div>
-                        </div>
 
-                        <div class="text-center m-3">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                            <a class="btn btn-primary" href="/">Home</a>
-                        </div>
-                    </form>
+<div class="modern-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="header-icon">
+                <i class="bi bi-person-search"></i>
+            </div>
+            Search Patient
+        </h1>
+    </div>
+
+    <div class="info-text">
+        <i class="bi bi-info-circle"></i>
+        Enter the patient's NIK (National Identity Number) to search for existing patient records
+    </div>
+
+    <div class="form-section">
+        <form th:action="@{/prescription/add/find-patient}" th:object="${dto}" method="POST">
+            <div class="form-group">
+                <label for="patient-nik" class="form-label-modern">
+                    <i class="bi bi-credit-card-2-front"></i>
+                    Patient NIK
+                </label>
+                <div class="input-with-icon">
+                    <i class="input-icon bi bi-credit-card-2-front"></i>
+                    <input class="form-input-modern with-icon" 
+                           type="number" 
+                           id="patient-nik" 
+                           th:field="*{nik}" 
+                           placeholder="Enter 16-digit NIK number"
+                           required/>
                 </div>
             </div>
-        </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-modern btn-primary-modern">
+                    <i class="bi bi-search"></i>
+                    Search Patient
+                </button>
+                <a class="btn-modern btn-secondary-modern" href="/">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 </body>

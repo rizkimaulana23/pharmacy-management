@@ -2,9 +2,9 @@ spring:
   application:
     name: pharmacy2206814425
   datasource:
-    url: jdbc:postgresql://localhost:15001/pharmacy2206814425
+    url: jdbc:postgresql://localhost:5432/pharmacy2206814425
     username: postgres
-    password: secret99
+    password: test
   jpa:
     properties:
       hibernate:

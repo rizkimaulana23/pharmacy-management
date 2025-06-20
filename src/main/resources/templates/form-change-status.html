@@ -6,90 +6,451 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Process Prescription</title>
+
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-blue-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .modern-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            margin: 2.5rem auto;
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--success);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .form-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+        }
+
+        .info-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-blue-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .price-value {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1rem;
+        }
+
+        .pharmacist-section {
+            background: var(--accent-blue-light);
+            border: 1px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-select-modern {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            background: white;
+        }
+
+        .form-select-modern:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .medicine-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+
+        .table-modern thead th {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-modern tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+            font-size: 0.875rem;
+        }
+
+        .table-modern tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .table-modern tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .row-number {
+            background: var(--accent-blue);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .medicine-id-badge {
+            background: var(--border-light);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .stock-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stock-sufficient {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .stock-insufficient {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .stock-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-modern {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-success-modern {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success-modern:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .error-text {
+            color: var(--danger);
+            font-size: 0.8125rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .button-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Process Prescription</h2>
+
+<div class="modern-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="header-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            Process Prescription
+        </h1>
     </div>
-    <div class="row justify-content-center">
-        <div class="card" style="width: 60rem;">
-            <div class="card-body">
-                <div>
-                    <form th:action="@{|/prescription/${idPrescription}/mark-done|}" th:object="${dto}" method="POST">
-<!--                        <div class="form-group row my-3">-->
-<!--                            <label for="processed-by" class="col-sm-3 fw-bold col-form-label">Processed By</label>-->
-<!--                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>-->
-<!--                            <div class="col-sm-3">-->
-<!--                                <select class="form-select" id="processed-by" th:field="*{processedBy}">-->
-<!--                                    <option value="" selected>Select a Pharmacist</option>-->
-<!--                                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
-                        <div class="row my-3">
-                            <label class="card-text fw-bold col-sm-3" for="processed-by">Processed By</label>
-                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                            <div class="col-sm-3">
-                                <select class="form-select" id="processed-by" th:field="*{processedBy}">
-                                    <option value="" selected>Select a Pharmacist</option>
-                                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>
-                                </select>
-                                <div class="text-danger" th:if="${#fields.hasErrors('processedBy')}" th:errors="*{processedBy}"></div>
-                            </div>
-                        </div>
-
-                        <div class="row my-3">
-                            <p class="card-text fw-bold col-sm-3">ID</p>
-                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                            <p class="card-text col-sm-8" th:text="${prescription.id}"></p>
-                        </div>
-
-                        <div class="row my-3">
-                            <p class="card-text fw-bold col-sm-3">Patient</p>
-                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                            <p class="card-text col-sm-8" th:text="${prescription.patient.name}"></p>
-                        </div>
-
-                        <div class="row my-3">
-                            <p class="card-text fw-bold col-sm-3">Total Price</p>
-                            <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                            <p class="card-text col-sm-8" th:text="${prescription.totalPrice}"></p>
-                        </div>
-
-                        <h5 class="fw-bold mt-4">Requested Medicine</h5>
-                            <table class="table table-striped table-bordered table-custom">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Medicine ID</th>
-                                        <th>Medicine Name</th>
-                                        <th>Requested Quantity</th>
-                                        <th>Fulfilled Quantity</th>
-                                        <th>Current Stock</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="mq, iter : ${listMedicineQuantity}">
-                                        <td th:text="${iter.count}"></td>
-                                        <td th:text="${mq.medicineId}"></td>
-                                        <td th:text="${dto.listMedicine[__${iter.index}__].name}"></td>
-                                        <td th:text="${mq.quantity}"></td>
-                                        <td th:text="${mq.fulfilledQty}"></td>
-                                        <td th:text="${dto.listMedicine[__${iter.index}__].stock}" th:style="${dto.listMedicine[__${iter.index}__].stock < (mq.quantity - mq.fulfilledQty)} ? 'color: red;' : 'color: black;'"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button type="submit" class="btn btn-primary">Continue</button>
-                    </form>
+    <form th:action="@{|/prescription/${idPrescription}/mark-done|}" th:object="${dto}" method="POST">
+        <!-- Pharmacist Selection -->
+        <div class="pharmacist-section">
+            <div class="section-title">
+                <i class="bi bi-person-workspace"></i>
+                Processing Information
+            </div>
+            
+            <div style="max-width: 400px;">
+                <label for="processed-by" class="form-label" style="font-weight: 600; color: var(--accent-blue); margin-bottom: 0.5rem; display: block;">
+                    Select Processing Pharmacist
+                </label>
+                <select class="form-select-modern" id="processed-by" th:field="*{processedBy}">
+                    <option value="" selected>Select a Pharmacist</option>
+                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>
+                </select>
+                <div class="error-text" th:if="${#fields.hasErrors('processedBy')}" th:errors="*{processedBy}">
+                    <i class="bi bi-exclamation-circle"></i>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Prescription Information -->
+        <div class="info-section">
+            <div class="section-title">
+                <i class="bi bi-info-circle"></i>
+                Prescription Details
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-hash"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Prescription ID</div>
+                        <div class="info-value" th:text="${prescription.id}"></div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Patient Name</div>
+                        <div class="info-value" th:text="${prescription.patient.name}"></div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Total Price</div>
+                        <div class="price-value" th:text="${'Rp ' + #numbers.formatDecimal(prescription.totalPrice, 0, 'COMMA', 0, 'POINT')}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicine Details -->
+        <div class="medicine-section">
+            <div class="section-title">
+                <i class="bi bi-capsule"></i>
+                Medicine Requirements
+            </div>
+
+            <div class="table-responsive">
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">#</th>
+                            <th style="width: 15%;">Medicine ID</th>
+                            <th style="width: 25%;">Medicine Name</th>
+                            <th style="width: 13%;">Requested</th>
+                            <th style="width: 13%;">Fulfilled</th>
+                            <th style="width: 13%;">Still Needed</th>
+                            <th style="width: 13%;">Current Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mq, iter : ${listMedicineQuantity}">
+                            <td>
+                                <div class="row-number" th:text="${iter.count}"></div>
+                            </td>
+                            <td>
+                                <span class="medicine-id-badge" th:text="${mq.medicineId}"></span>
+                            </td>
+                            <td>
+                                <strong th:text="${dto.listMedicine[__${iter.index}__].name}"></strong>
+                            </td>
+                            <td>
+                                <span th:text="${mq.quantity}" style="font-weight: 600;"></span>
+                            </td>
+                            <td>
+                                <span th:text="${mq.fulfilledQty}" style="font-weight: 600; color: var(--success);"></span>
+                            </td>
+                            <td>
+                                <span th:text="${mq.quantity - mq.fulfilledQty}" style="font-weight: 600; color: var(--warning);"></span>
+                            </td>
+                            <td>
+                                <div class="stock-indicator">
+                                    <span th:text="${dto.listMedicine[__${iter.index}__].stock}"
+                                          th:class="${dto.listMedicine[__${iter.index}__].stock >= (mq.quantity - mq.fulfilledQty)} ? 'stock-sufficient' : 'stock-insufficient'"></span>
+                                    <i th:class="${dto.listMedicine[__${iter.index}__].stock >= (mq.quantity - mq.fulfilledQty)} ? 'bi bi-check-circle-fill stock-icon' : 'bi bi-exclamation-triangle-fill stock-icon'"
+                                       th:style="${dto.listMedicine[__${iter.index}__].stock >= (mq.quantity - mq.fulfilledQty)} ? 'color: var(--success);' : 'color: var(--danger);'"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="button-section">
+            <button type="submit" class="btn-modern btn-success-modern">
+                <i class="bi bi-check-circle"></i>
+                Process & Mark as Done
+            </button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

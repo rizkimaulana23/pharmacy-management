@@ -6,94 +6,398 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Update Prescription</title>
+
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-blue-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .modern-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            margin: 2.5rem auto;
+            padding: 2.5rem;
+            max-width: 1000px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+        }
+
+        .form-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px auto;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-input-modern {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            background: white;
+        }
+
+        .form-input-modern:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input-modern:disabled {
+            background: var(--border-light);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .form-select-modern {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            background: white;
+        }
+
+        .form-select-modern:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .prescription-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .btn-modern {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: var(--accent-blue-hover);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .btn-danger-modern {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger-modern:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .btn-secondary-modern {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary-modern:hover {
+            background: white;
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .table-modern thead th {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-modern tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        .table-modern tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .table-modern tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .readonly-badge {
+            background: var(--warning);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Update Prescription</h2>
+
+<div class="modern-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="header-icon">
+                <i class="bi bi-pencil-fill"></i>
+            </div>
+            Update Prescription
+        </h1>
     </div>
-    <div class="row justify-content-center">
-        <div class="card" style="width: 60rem;">
-            <div class="card-body">
-                <div>
-                    <form th:action="@{|/prescription/${idPrescription}/update|}" th:object="${dto}" method="POST">
 
-                        <div class="row my-3">
-                            <label for="prescription-id" class="col-sm-2 fw-bold col-form-label">Prescription ID</label>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="prescription-id" th:field="*{prescriptionId}"/>
-                            </div>
-                        </div>
+    <form th:action="@{|/prescription/${idPrescription}/update|}" th:object="${dto}" method="POST">
+        <!-- Prescription Information -->
+        <div class="info-section">
+            <div class="section-title">
+                <i class="bi bi-info-circle"></i>
+                Prescription Information
+            </div>
 
-                        <div class="row my-3">
-                            <label for="patient" class="col-sm-2 fw-bold col-form-label">Patient</label>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="patient" th:field="*{patientName}"/>
-                            </div>
-                        </div>
-
-                        <div class="row my-3">
-                            <label for="pharmacist" class="col-sm-2 fw-bold col-form-label">Updated By</label>
-                            <p class="col-sm-1 fw-bold col-form-label" style="width: 2%">:</p>
-                            <div class="col-sm-3">
-                                <select class="form-select" id="pharmacist" th:field="*{updatedBy}">
-                                    <option value="" selected>Select a Pharmacist</option>
-                                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <p class="fw-bold">Prescription Data</p>
-                        <br>
-                        <div class="d-flex justify-content-between">
-                            <h5>Prescription Data</h5>
-                            <button class="btn btn-primary" type="submit" name="addRow">Add Row</button>
-                        </div>
-                        <div class="form-group column my-3">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Medicine</th>
-                                    <th>Stock Amount</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="medicineQuantity, iterationStatus : *{listMedicineQuantity}">
-                                    <td>
-                                        <select th:field="*{listMedicineQuantity[__${iterationStatus.index}__].medicineId}" class="form-select">
-                                            <option th:each="medicineExisting : ${listMedicineExisting}"
-                                                    th:text="${medicineExisting.getName()}"
-                                                    th:value="${medicineExisting.getId()}"></option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="number" th:field="*{listMedicineQuantity[__${iterationStatus.index}__].qty}">
-                                    </td>
-                                    <td>
-                                        <button th:value="${iterationStatus.index}" class="btn btn-danger"
-                                                type="submit" name="deleteRow">Delete Row</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-
-                            </table>
-                        </div>
-
-                        <div class="text-center m-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a class="btn btn-primary" href="/">Home</a>
-                        </div>
-                    </form>
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="bi bi-hash"></i>
+                    Prescription ID
+                    <span class="readonly-badge">Read Only</span>
                 </div>
+                <input class="form-input-modern" type="text" th:field="*{prescriptionId}" disabled/>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="bi bi-person"></i>
+                    Patient Name
+                    <span class="readonly-badge">Read Only</span>
+                </div>
+                <input class="form-input-modern" type="text" th:field="*{patientName}" disabled/>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="bi bi-person-workspace"></i>
+                    Updated By
+                </div>
+                <select class="form-select-modern" th:field="*{updatedBy}">
+                    <option value="" selected>Select a Pharmacist</option>
+                    <option th:each="pharmacist: ${listPharmacist}" th:value="${pharmacist.id}" th:text="${pharmacist.name}"></option>
+                </select>
             </div>
         </div>
-    </div>
+
+        <!-- Medicine Prescription Section -->
+        <div class="prescription-section">
+            <div class="section-header">
+                <h5 class="section-title" style="margin: 0;">
+                    <i class="bi bi-capsule"></i>
+                    Medicine Prescription
+                </h5>
+                <button class="btn-modern btn-primary-modern" type="submit" name="addRow">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Medicine
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table-modern">
+                    <thead>
+                    <tr>
+                        <th style="width: 50%;">Medicine</th>
+                        <th style="width: 25%;">Quantity</th>
+                        <th style="width: 25%;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="medicineQuantity, iterationStatus : *{listMedicineQuantity}">
+                        <td>
+                            <select th:field="*{listMedicineQuantity[__${iterationStatus.index}__].medicineId}" class="form-select-modern">
+                                <option value="">Select Medicine</option>
+                                <option th:each="medicineExisting : ${listMedicineExisting}"
+                                        th:text="${medicineExisting.getName()}"
+                                        th:value="${medicineExisting.getId()}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-input-modern" type="number" min="1" placeholder="Enter quantity" th:field="*{listMedicineQuantity[__${iterationStatus.index}__].qty}">
+                        </td>
+                        <td>
+                            <button th:value="${iterationStatus.index}" class="btn-modern btn-danger-modern"
+                                    type="submit" name="deleteRow">
+                                <i class="bi bi-trash"></i>
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn-modern btn-primary-modern">
+                <i class="bi bi-check-circle"></i>
+                Update Prescription
+            </button>
+            <a class="btn-modern btn-secondary-modern" href="/">
+                <i class="bi bi-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </form>
 </div>
 </body>
 </html>

@@ -5,102 +5,413 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Detail Medicine</title>
+    <title>Medicine Details</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-card: #ffffff;
+            --text-primary: #0a0a0a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --border-light: #e5e7eb;
+            --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition-fast: 0.15s ease-out;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .detail-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            padding: 2.5rem;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .detail-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .detail-item {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f8fafc;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-value {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .detail-value.id {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .detail-value.name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .detail-value.price {
+            font-weight: 600;
+            color: var(--accent-green);
+            font-size: 1rem;
+        }
+
+        .stock-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stock-high {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stock-low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .actions-section {
+            border-top: 1px solid var(--border-light);
+            padding-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-modern {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .btn-warning-modern {
+            background: var(--accent-yellow);
+            color: white;
+        }
+
+        .btn-warning-modern:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .btn-danger-modern {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .btn-danger-modern:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+
+        .modal-content {
+            border-radius: var(--radius);
+            border: none;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .detail-card {
+                padding: 1.75rem;
+            }
+
+            .detail-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .actions-section {
+                flex-direction: column;
+            }
+
+            .btn-modern {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .detail-grid {
+                gap: 1rem;
+            }
+
+            .detail-item {
+                padding: 0.75rem 0;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-item:nth-child(1) { animation-delay: 0.05s; }
+        .detail-item:nth-child(2) { animation-delay: 0.1s; }
+        .detail-item:nth-child(3) { animation-delay: 0.15s; }
+        .detail-item:nth-child(4) { animation-delay: 0.2s; }
+        .detail-item:nth-child(5) { animation-delay: 0.25s; }
+        .detail-item:nth-child(6) { animation-delay: 0.3s; }
+        .detail-item:nth-child(7) { animation-delay: 0.35s; }
+        .detail-item:nth-child(8) { animation-delay: 0.4s; }
+        .detail-item:nth-child(9) { animation-delay: 0.45s; }
+    </style>
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Detail Medicine</h2>
-    </div>
-    <div class="row justify-content-center">
-        <div class="card" style="width: 40rem;">
-            <div class="card-body">
 
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Medicine ID</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.getId()}"></p>
-                </div>
+<main class="main-container">
+    <header class="page-header">
+        <h1 class="page-title">Medicine Details</h1>
+        <p class="page-subtitle">Comprehensive information about this medicine</p>
+    </header>
 
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Medicine Name</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.getName()}"></p>
-                </div>
+    <div class="detail-card">
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Medicine ID</span>
+                <p class="detail-value id" th:text="${medicine.getId()}"></p>
+            </div>
 
+            <div class="detail-item">
+                <span class="detail-label">Medicine Name</span>
+                <p class="detail-value name" th:text="${medicine.getName()}"></p>
+            </div>
 
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Price</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.formatRupiah(medicine.getPrice())}"></p>
-                </div>
+            <div class="detail-item">
+                <span class="detail-label">Price</span>
+                <p class="detail-value price" th:text="${medicine.formatRupiah(medicine.getPrice())}"></p>
+            </div>
 
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Stock</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.getStock()}"></p>
-                </div>
-
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Entered At</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.formatDate(medicine.getCreatedDate())}"></p>
-                </div>
-
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Updated At</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.formatDate(medicine.getUpdatedDate())}"></p>
-                </div>
-
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Created By</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.getCreatedBy()}"></p>
-                </div>
-
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Updated By</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.getUpdatedBy()}"></p>
-                </div>
-
-                <div class="row my-3">
-                    <p class="card-text fw-bold col-sm-3">Description</p>
-                    <p class="card-text fw-bold col-sm-1" style="width: 2%">:</p>
-                    <p class="card-text col-sm-8" th:text="${medicine.getDescription()}"></p>
+            <div class="detail-item">
+                <span class="detail-label">Stock Status</span>
+                <div th:switch="${medicine.getStock()}">
+                    <span th:case="${medicine.getStock() > 50}" class="stock-indicator stock-high">
+                        <i class="bi bi-check-circle"></i>
+                        <span th:text="${medicine.getStock()} + ' units - In Stock'"></span>
+                    </span>
+                    <span th:case="${medicine.getStock() > 20}" class="stock-indicator stock-medium">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <span th:text="${medicine.getStock()} + ' units - Low Stock'"></span>
+                    </span>
+                    <span th:case="*" class="stock-indicator stock-low">
+                        <i class="bi bi-x-circle"></i>
+                        <span th:text="${medicine.getStock()} + ' units - Critical'"></span>
+                    </span>
                 </div>
             </div>
-            <a th:href="@{|/medicine/${medicine.getId()}/update-stock|}" class="btn btn-outline-primary">Add Stock</a>
-            <a th:href="@{|/medicine/${medicine.getId()}/update|}" class="btn btn-warning">Edit Data</a>
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+
+            <div class="detail-item">
+                <span class="detail-label">Entered At</span>
+                <p class="detail-value" th:text="${medicine.formatDate(medicine.getCreatedDate())}"></p>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Updated At</span>
+                <p class="detail-value" th:text="${medicine.formatDate(medicine.getUpdatedDate())}"></p>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Created By</span>
+                <p class="detail-value" th:text="${medicine.getCreatedBy()}"></p>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Updated By</span>
+                <p class="detail-value" th:text="${medicine.getUpdatedBy()}"></p>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Description</span>
+                <p class="detail-value" th:text="${medicine.getDescription()}"></p>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <a th:href="@{|/medicine/${medicine.getId()}/update-stock|}" class="btn-modern btn-primary-modern">
+                <i class="bi bi-arrow-up-circle"></i>
+                Add Stock
+            </a>
+            <a th:href="@{|/medicine/${medicine.getId()}/update|}" class="btn-modern btn-warning-modern">
+                <i class="bi bi-pencil"></i>
+                Edit Data
+            </a>
+            <button class="btn-modern btn-danger-modern" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="bi bi-trash"></i>
+                Delete
+            </button>
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body text-center">
-                    <h5>Are you sure you want to delete this medication?</h5>
-                    <div class="d-flex justify-content-center mt-3 gap-2">
-                        <form th:action="@{|/medicine/${medicine.getId()}/delete|}">
-                            <button type="submit" class="btn btn-primary">Yes</button>
+                <div class="modal-body">
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 3rem; color: var(--accent-red);"></i>
+                    </div>
+                    <h5 class="modal-title">Delete Medicine</h5>
+                    <p style="color: var(--text-secondary);">
+                        Are you sure you want to delete this medicine? This action cannot be undone.
+                    </p>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-modern btn-secondary-modern" data-bs-dismiss="modal">
+                            <i class="bi bi-x"></i>
+                            Cancel
+                        </button>
+                        <form th:action="@{|/medicine/${medicine.getId()}/delete|}" style="display: inline;">
+                            <button type="submit" class="btn-modern btn-danger-modern">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </button>
                         </form>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</main>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

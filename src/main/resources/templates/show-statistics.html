@@ -6,52 +6,331 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>Search Patient</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Medication Usage Statistics</title>
+
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-blue-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .modern-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            margin: 2.5rem auto;
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+        }
+
+        .controls-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            align-items: end;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-label-modern {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-select-modern {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            background: white;
+        }
+
+        .form-select-modern:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-modern {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary-modern {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: var(--accent-blue-hover);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .chart-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .loading-state {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .loading-state i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats-info {
+            background: var(--accent-blue-light);
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .stats-info i {
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+        }
+
+        .stats-info-text {
+            color: var(--accent-blue);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .modern-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .chart-container {
+                height: 300px;
+                padding: 0.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div class="container">
-    <div class="text-center my-4">
-        <h2>Medication Usage Statistics</h2>
+
+<div class="modern-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="header-icon">
+                <i class="bi bi-bar-chart-fill"></i>
+            </div>
+            Medication Usage Statistics
+        </h1>
     </div>
 
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-2">
-            <select class="form-select" id="month-select">
-                <option value="JANUARY">January</option>
-                <option value="FEBRUARY">February</option>
-                <option value="MARCH">March</option>
-                <option value="APRIL">April</option>
-                <option value="MAY">May</option>
-                <option value="JUNE">June</option>
-                <option value="JULY">July</option>
-                <option value="AUGUST">August</option>
-                <option value="SEPTEMBER">September</option>
-                <option value="OCTOBER" selected>October</option>
-                <option value="NOVEMBER">November</option>
-                <option value="DECEMBER">December</option>
-            </select>
+    <!-- Controls Section -->
+    <div class="controls-section">
+        <div class="section-title">
+            <i class="bi bi-sliders"></i>
+            Chart Controls
         </div>
-        <div class="col-md-2">
-            <select class="form-select" id="year-select">
-                <option value="2025">2025</option>
-                <option value="2024" selected>2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-            </select>
+        
+        <div class="stats-info">
+            <i class="bi bi-info-circle-fill"></i>
+            <p class="stats-info-text">
+                Select a month and year to view medication usage statistics for that period. 
+                The chart will display the most prescribed medicines and their quantities.
+            </p>
         </div>
-        <div class="col-md-2">
-            <button class="btn btn-primary" id="load-chart">Load Chart</button>
+        
+        <div class="controls-grid">
+            <div class="form-group">
+                <label for="month-select" class="form-label-modern">
+                    <i class="bi bi-calendar-month"></i>
+                    Month
+                </label>
+                <select class="form-select-modern" id="month-select">
+                    <option value="JANUARY">January</option>
+                    <option value="FEBRUARY">February</option>
+                    <option value="MARCH">March</option>
+                    <option value="APRIL">April</option>
+                    <option value="MAY">May</option>
+                    <option value="JUNE">June</option>
+                    <option value="JULY">July</option>
+                    <option value="AUGUST">August</option>
+                    <option value="SEPTEMBER">September</option>
+                    <option value="OCTOBER" selected>October</option>
+                    <option value="NOVEMBER">November</option>
+                    <option value="DECEMBER">December</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="year-select" class="form-label-modern">
+                    <i class="bi bi-calendar-year"></i>
+                    Year
+                </label>
+                <select class="form-select-modern" id="year-select">
+                    <option value="2025">2025</option>
+                    <option value="2024" selected>2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label-modern" style="opacity: 0;">Action</label>
+                <button class="btn-modern btn-primary-modern" id="load-chart">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Update Chart
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div>
+    <!-- Chart Section -->
+    <div class="chart-section">
+        <div class="section-title">
+            <i class="bi bi-graph-up"></i>
+            Usage Statistics Chart
+        </div>
+        
+        <div class="loading-state" id="loading-state">
+            <i class="bi bi-arrow-repeat"></i>
+            <p>Loading chart data...</p>
+        </div>
+        
+        <div class="chart-container">
             <canvas id="myChart"></canvas>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
@@ -64,17 +343,97 @@
             datasets: [{
                 label: '# of Votes',
                 data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
+                borderWidth: 1,
+                backgroundColor: [
+                    '#3b82f6',
+                    '#10b981',
+                    '#f59e0b',
+                    '#ef4444',
+                    '#8b5cf6',
+                    '#06b6d4'
+                ],
+                borderColor: [
+                    '#2563eb',
+                    '#059669',
+                    '#d97706',
+                    '#dc2626',
+                    '#7c3aed',
+                    '#0891b2'
+                ]
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: {
+                            family: 'Inter',
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1f2937',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    borderColor: '#e5e7eb',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    titleFont: {
+                        family: 'Inter',
+                        size: 14,
+                        weight: '600'
+                    },
+                    bodyFont: {
+                        family: 'Inter',
+                        size: 13
+                    }
+                }
+            },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        color: '#f3f4f6'
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Inter',
+                            size: 12
+                        },
+                        color: '#6b7280'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Inter',
+                            size: 12
+                        },
+                        color: '#6b7280'
+                    }
                 }
             }
         }
     });
+
+    function showLoading() {
+        $('#loading-state').show();
+        $('#myChart').parent().hide();
+    }
+
+    function hideLoading() {
+        $('#loading-state').hide();
+        $('#myChart').parent().show();
+    }
 
     // AJAX call to load data based on month and year selection
     $('#load-chart').on('click', function() {
@@ -86,6 +445,8 @@
             return;
         }
 
+        showLoading();
+
         // Create the URL with query parameters for month and year
         var apiUrl = `/api/prescription/statistic?month=${selectedMonth}&year=${selectedYear}`;
 
@@ -94,33 +455,38 @@
 
         // Perform the AJAX call to fetch data
         $.ajax({
-            url: apiUrl, // The URL now contains the month and year as query parameters
+            url: apiUrl,
             type: 'GET',
             success: function(response) {
                 // Update chart with the new data
                 console.log(response)
                 updateChart(response.result.labels, response.result.datasets);
+                hideLoading();
             },
             error: function() {
-                alert('Failed to load data.');
+                hideLoading();
+                alert('Failed to load data. Please try again.');
             }
         });
     });
 
     $(document).ready(function() {
+        showLoading();
         var apiUrl = `/api/prescription/statistic`;
 
         // Perform the AJAX call to fetch data
         $.ajax({
-            url: apiUrl, // The URL now contains the month and year as query parameters
+            url: apiUrl,
             type: 'GET',
             success: function(response) {
                 // Update chart with the new data
                 console.log(response)
                 updateChart(response.result.labels, response.result.datasets);
+                hideLoading();
             },
             error: function() {
-                alert('Failed to load data.');
+                hideLoading();
+                alert('Failed to load initial data.');
             }
         });
     });
